@@ -1,7 +1,9 @@
+// lib/profile_screen.dart
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart'; // <-- Agrega esta dependencia en pubspec.yaml
+import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'main_scaffold.dart';
+import 'app_theme.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -13,27 +15,16 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   bool _isEditing = false;
 
-  // Controladores para los campos de texto
-  final TextEditingController _fichaController = TextEditingController(text: "20241A123");
-  final TextEditingController _programaController = TextEditingController(text: "Análisis y Desarrollo de Software");
-  final TextEditingController _sangreController = TextEditingController(text: "O+");
+  final TextEditingController _celularController = TextEditingController(text: "300 123 4567");
   final TextEditingController _direccionController = TextEditingController(text: "Calle 45 #12-34, Medellín");
 
-  // Foto de perfil (inicia con una foto bonita por defecto)
   File? _profileImage;
   final ImagePicker _picker = ImagePicker();
 
-  // Función para seleccionar foto desde galería
   Future<void> _pickImage() async {
-    final XFile? pickedFile = await _picker.pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 80,
-    );
-
-    if (pickedFile != null) {
-      setState(() {
-        _profileImage = File(pickedFile.path);
-      });
+    final picked = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
+    if (picked != null) {
+      setState(() => _profileImage = File(picked.path));
     }
   }
 
@@ -42,13 +33,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return MainScaffold(
       currentIndex: 3,
       child: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(   // ← ESTA LÍNEA ES LA QUE ARREGLA TODO
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
               const SizedBox(height: 20),
 
-              // Foto de perfil clickeable (solo en modo edición)
+              // Foto de perfil
               GestureDetector(
                 onTap: _isEditing ? _pickImage : null,
                 child: CircleAvatar(
@@ -62,38 +53,53 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
 
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
               const Text(
                 "Estefani Portilla",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: AppTheme.primary),
               ),
-              const SizedBox(height: 30),
 
-              // Botón Editar / Guardar
-              ElevatedButton.icon(
-                onPressed: () {
-                  setState(() {
-                    _isEditing = !_isEditing;
-                  });
-                },
-                icon: Icon(_isEditing ? Icons.save : Icons.edit),
-                label: Text(_isEditing ? "Guardar Cambios" : "Editar Perfil"),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: _isEditing ? Colors.green : Colors.blue,
-                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+              const SizedBox(height: 40),
+
+              // Todos los datos
+              _infoRow(Icons.badge, "Ficha", "3064975"),
+              const SizedBox(height: 20),
+              _infoRow(Icons.school, "Programa", "Análisis y Desarrollo de Software"),
+              const SizedBox(height: 20),
+              _infoRow(Icons.bloodtype, "Tipo de sangre", "O+"),
+              const SizedBox(height: 20),
+              _isEditing
+                  ? _editableField(Icons.phone, "Número de celular", _celularController)
+                  : _infoRow(Icons.phone, "Número de celular", _celularController.text),
+              const SizedBox(height: 20),
+              _isEditing
+                  ? _editableField(Icons.home, "Dirección", _direccionController)
+                  : _infoRow(Icons.home, "Dirección", _direccionController.text),
+              const SizedBox(height: 40),
+
+              // BOTÓN ABAJO DEL TODO
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    setState(() => _isEditing = !_isEditing);
+                    if (!_isEditing) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("¡Cambios guardados!")),
+                      );
+                    }
+                  },
+                  icon: Icon(_isEditing ? Icons.save : Icons.edit),
+                  label: Text(_isEditing ? "Guardar Cambios" : "Editar Perfil"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.primary,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                  ),
                 ),
               ),
 
-              const SizedBox(height: 30),
-
-              // Campos de texto (habilitados solo en edición)
-              _buildTextField("Ficha", _fichaController),
-              const SizedBox(height: 12),
-              _buildTextField("Programa", _programaController),
-              const SizedBox(height: 12),
-              _buildTextField("Tipo de sangre", _sangreController),
-              const SizedBox(height: 12),
-              _buildTextField("Dirección", _direccionController),
+              const SizedBox(height: 20), // Espacio final para que no toque el botón de navegación
             ],
           ),
         ),
@@ -101,19 +107,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  // Widget reutilizable para los campos
-  Widget _buildTextField(String label, TextEditingController controller) {
+  Widget _infoRow(IconData icon, String label, String value) {
+    return Row(
+      children: [
+        Icon(icon, color: AppTheme.primary, size: 28),
+        const SizedBox(width: 16),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(label, style: const TextStyle(color: Colors.grey, fontSize: 14)),
+              const SizedBox(height: 4),
+              Text(value, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _editableField(IconData icon, String label, TextEditingController controller) {
     return TextField(
       controller: controller,
-      enabled: _isEditing,
+      keyboardType: label.contains("celular") ? TextInputType.phone : TextInputType.streetAddress,
       decoration: InputDecoration(
+        prefixIcon: Icon(icon, color: AppTheme.primary),
         labelText: label,
-        border: OutlineInputBorder(
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-        ),
-        disabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.grey),
+          borderSide: const BorderSide(color: AppTheme.primary, width: 1.5),
         ),
       ),
     );
@@ -121,9 +144,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   void dispose() {
-    _fichaController.dispose();
-    _programaController.dispose();
-    _sangreController.dispose();
+    _celularController.dispose();
     _direccionController.dispose();
     super.dispose();
   }

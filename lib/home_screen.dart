@@ -19,16 +19,16 @@ class HomeScreen extends StatelessWidget {
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFFFF3E0),
-                  borderRadius: BorderRadius.circular(12),
+                decoration: const BoxDecoration(
+                  color: Color(0xFFFFF3E0),
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
                   border: Border(left: BorderSide(color: AppTheme.accent, width: 5)),
                 ),
-                child: Row(
+                child: const Row(
                   children: [
                     Icon(Icons.warning_amber, color: AppTheme.accent),
-                    const SizedBox(width: 12),
-                    const Text("Alerta de entregables pendientes", style: TextStyle(fontWeight: FontWeight.w600)),
+                    SizedBox(width: 12),
+                    Text("Alerta de entregables pendientes", style: TextStyle(fontWeight: FontWeight.w600)),
                   ],
                 ),
               ),
@@ -64,7 +64,7 @@ class HomeScreen extends StatelessWidget {
               lineHeight: 14,
               backgroundColor: Colors.grey.shade300,
               progressColor: c,
-              barRadius: Radius.circular(10),
+              barRadius: const Radius.circular(10),
             ),
           ),
           const SizedBox(width: 10),
