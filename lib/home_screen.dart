@@ -43,10 +43,10 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 40),
               const Text("Entregables", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               const SizedBox(height: 16),
-              _deliverable("Inglés", "Natalia R.", "verb to be", "Vence en 2 días", Colors.orange),
-              _deliverable("Ética", "Natalia R.", "verb to be", "Entregado", Colors.green),
-              _deliverable("Negocios", "Natalia R.", "verb to be", "Vence en 1 día", Colors.red),
-              _deliverable("Ética", "Natalia R.", "verb to be", "En curso", Colors.blue),
+              _deliverable("Inglés", "Natalia R.", "Vence en 2 días", Colors.orange),
+              _deliverable("Ética", "Natalia R.", "Entregado", Colors.green),
+              _deliverable("Negocios", "Natalia R.", "Vence en 1 día", Colors.red),
+              _deliverable("Ética", "Natalia R.", "En curso", Colors.blue),
             ],
           ),
         ),
@@ -72,13 +72,16 @@ class HomeScreen extends StatelessWidget {
         ]),
       );
 
-  Widget _deliverable(String sub, String prof, String tit, String est, Color col) => Card(
+  Widget _deliverable(String sub, String prof, String est, Color col) => Card(
         margin: const EdgeInsets.symmetric(vertical: 6),
         child: ListTile(
           leading: CircleAvatar(backgroundColor: col, child: Text(sub[0], style: const TextStyle(color: Colors.white))),
-          title: Text(tit),
+          title: Text(sub),
           subtitle: Text("$prof • $est"),
-          trailing: est.contains("Vence") ? const Icon(Icons.warning, color: Colors.orange) : null,
+          trailing: TextButton(
+            onPressed: () {},
+            child: const Text("Ver"),
+          ),
         ),
       );
 }
