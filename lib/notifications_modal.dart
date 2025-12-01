@@ -23,15 +23,49 @@ class NotificationsModal extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsets.all(16),
               children: const [
-               
+                // Notificaciones
                 _Noti(tipo: "Bienestar", mensaje: "Actividad deportiva", hora: "10:00 AM", color: Colors.orange),
                 _Noti(tipo: "Académico", mensaje: "Notas actualizadas", hora: "Ayer", color: Colors.green),
 
-                 _Noti(tipo: "Alerta", mensaje: "Tienes entregables pendientes", hora: "8:20 AM", color: Colors.red),
+                // Separador de Alertas
+                _SectionDivider(label: "ALERTAS"),
+
+                // Alertas
+                _Noti(tipo: "Alerta", mensaje: "Tienes entregables pendientes", hora: "8:20 AM", color: Colors.red),
                 _Noti(tipo: "Alerta", mensaje: "Primer llamado reportate a tu instructor", hora: "8:20 AM", color: Colors.red),
               ],
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SectionDivider extends StatelessWidget {
+  final String label;
+  const _SectionDivider({required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      child: Row(
+        children: [
+          const Expanded(child: Divider(color: Colors.grey, thickness: 0.5)),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Text(
+              label,
+              style: const TextStyle(
+                fontSize: 11,
+                color: Colors.grey,
+                fontWeight: FontWeight.w500,
+                letterSpacing: 1.2,
+              ),
+            ),
+          ),
+          const Expanded(child: Divider(color: Colors.grey, thickness: 0.5)),
         ],
       ),
     );
