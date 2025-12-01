@@ -1,6 +1,7 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
 import 'app_theme.dart';
+import 'login_screen.dart';
 import 'home_screen.dart';
 import 'schedule_screen.dart';
 import 'appointment_screen.dart';
@@ -16,8 +17,9 @@ class SispaApp extends StatelessWidget {
       title: 'SISPA',
       theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
-      initialRoute: '/home',
+      initialRoute: '/login',
       routes: {
+        '/login': (_) => const LoginScreen(),
         '/home': (_) => const HomeScreen(),
         '/schedule': (_) => const ScheduleScreen(),
         '/appointments': (_) => const AppointmentsScreen(),

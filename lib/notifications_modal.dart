@@ -23,10 +23,12 @@ class NotificationsModal extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsets.all(16),
               children: const [
-                _Noti(tipo: "Alerta", mensaje: "Tienes entregables pendientes", hora: "8:20 AM", color: Colors.red),
-                _Noti(tipo: "Alerta", mensaje: "Primer llamado reportate a tu instructor", hora: "8:20 AM", color: Colors.red),
+               
                 _Noti(tipo: "Bienestar", mensaje: "Actividad deportiva", hora: "10:00 AM", color: Colors.orange),
                 _Noti(tipo: "Académico", mensaje: "Notas actualizadas", hora: "Ayer", color: Colors.green),
+
+                 _Noti(tipo: "Alerta", mensaje: "Tienes entregables pendientes", hora: "8:20 AM", color: Colors.red),
+                _Noti(tipo: "Alerta", mensaje: "Primer llamado reportate a tu instructor", hora: "8:20 AM", color: Colors.red),
               ],
             ),
           ),
