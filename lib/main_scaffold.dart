@@ -22,6 +22,7 @@ class MainScaffold extends StatelessWidget {
           ],
         ),
         actions: [
+          // Campana de notificaciones
           Stack(
             children: [
               IconButton(
@@ -39,6 +40,11 @@ class MainScaffold extends StatelessWidget {
                 child: CircleAvatar(radius: 8, backgroundColor: Colors.red, child: Text("9", style: TextStyle(fontSize: 10, color: Colors.white))),
               ),
             ],
+          ),
+          // Botón para cerrar sesión
+          IconButton(
+            icon: const Icon(Icons.logout_outlined, size: 28),
+            onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
           ),
           const SizedBox(width: 10),
         ],
