@@ -1,10 +1,9 @@
-// lib/login_screen.dart
 import 'package:flutter/material.dart';
 import 'app_theme.dart';
+import './services/auth_service.dart'; // ← Importa el servicio aquí
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
-
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -13,14 +12,26 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _userController = TextEditingController();
   final _passController = TextEditingController();
+  bool _isLoading = false; // ← Para mostrar loading
 
-  void _login() {
+  Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
-      if (_userController.text == "sena.aprendiz2025@gmail.com" && _passController.text == "3064975") {
+      setState(() => _isLoading = true); // Inicia loading
+
+      final response = await AuthService.login(
+        correo: _userController.text,
+        password: _passController.text,
+      );
+
+      setState(() => _isLoading = false); // Termina loading
+
+      if (response['ok'] == true) {
+        // Navega a home si login exitoso
         Navigator.pushReplacementNamed(context, '/home');
       } else {
+        // Muestra error del backend o genérico
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Usuario o contraseña incorrectos")),
+          SnackBar(content: Text(response['message'] ?? "Error desconocido")),
         );
       }
     }
@@ -36,7 +47,6 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Logo / Título grande
               const Text(
                 "sispa.",
                 style: TextStyle(
@@ -46,8 +56,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(height: 60),
-
-              // Tarjeta del formulario
               Card(
                 elevation: 10,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -86,8 +94,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               backgroundColor: AppTheme.primary,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                             ),
-                            onPressed: _login,
-                            child: const Text("Ingresar", style: TextStyle(fontSize: 18)),
+                            onPressed: _isLoading ? null : _login, // Deshabilita si loading
+                            child: _isLoading
+                                ? const CircularProgressIndicator(color: Colors.white) // ← Muestra spinner
+                                : const Text("Ingresar", style: TextStyle(fontSize: 18)),
                           ),
                         ),
                       ],
