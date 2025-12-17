@@ -1,7 +1,7 @@
 // lib/main_scaffold.dart
 import 'package:flutter/material.dart';
-import 'app_theme.dart';
-import 'notifications_modal.dart';
+import '../app_theme.dart';
+import '../screens/notifications_modal.dart';
 
 class MainScaffold extends StatelessWidget {
   final Widget child;

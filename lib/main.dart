@@ -1,11 +1,12 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
 import 'app_theme.dart';
-import 'login_screen.dart';
-import 'home_screen.dart';
-import 'schedule_screen.dart';
-import 'appointment_screen.dart';
-import 'profile_screen.dart';
+import 'screens/login_screen.dart';
+import 'screens/home_screen.dart';
+import 'screens/schedule_screen.dart';
+import 'screens/appointment_screen.dart';
+import 'screens/profile_screen.dart';
+import 'forgot_password_screen.dart';
 
 void main() => runApp(const SispaApp());
 
@@ -24,6 +25,7 @@ class SispaApp extends StatelessWidget {
         '/schedule': (_) => const ScheduleScreen(),
         '/appointments': (_) => const AppointmentsScreen(),
         '/profile': (_) => const ProfileScreen(),
+        '/forgot-password': (_) => const ForgotPasswordScreen(),
       },
     );
   }

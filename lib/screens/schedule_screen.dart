@@ -1,7 +1,7 @@
 // lib/schedule_screen.dart
 import 'package:flutter/material.dart';
-import 'main_scaffold.dart';
-import 'app_theme.dart';
+import '../widgets/main_scaffold.dart';
+import '../app_theme.dart';
 
 class ScheduleScreen extends StatelessWidget {
   const ScheduleScreen({super.key});

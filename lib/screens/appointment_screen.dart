@@ -1,8 +1,8 @@
 // lib/appointments_screen.dart
 import 'package:flutter/material.dart';
-import 'main_scaffold.dart';
+import '../widgets/main_scaffold.dart';
 import 'appointment_form_sheet.dart';
-import 'app_theme.dart';
+import '../app_theme.dart';
 
 class AppointmentsScreen extends StatefulWidget {
   const AppointmentsScreen({super.key});
