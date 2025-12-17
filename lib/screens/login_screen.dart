@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'app_theme.dart';
-import './services/auth_service.dart'; // ← Importa el servicio aquí
+import '../app_theme.dart';
+import '../services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -12,24 +12,22 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _userController = TextEditingController();
   final _passController = TextEditingController();
-  bool _isLoading = false; // ← Para mostrar loading
+  bool _isLoading = false;
 
   Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
-      setState(() => _isLoading = true); // Inicia loading
+      setState(() => _isLoading = true);
 
       final response = await AuthService.login(
         correo: _userController.text,
         password: _passController.text,
       );
 
-      setState(() => _isLoading = false); // Termina loading
+      setState(() => _isLoading = false);
 
       if (response['ok'] == true) {
-        // Navega a home si login exitoso
         Navigator.pushReplacementNamed(context, '/home');
       } else {
-        // Muestra error del backend o genérico
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(response['message'] ?? "Error desconocido")),
         );
@@ -94,10 +92,27 @@ class _LoginScreenState extends State<LoginScreen> {
                               backgroundColor: AppTheme.primary,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                             ),
-                            onPressed: _isLoading ? null : _login, // Deshabilita si loading
+                            onPressed: _isLoading ? null : _login,
                             child: _isLoading
-                                ? const CircularProgressIndicator(color: Colors.white) // ← Muestra spinner
+                                ? const CircularProgressIndicator(color: Colors.white)
                                 : const Text("Ingresar", style: TextStyle(fontSize: 18)),
+                          ),
+                        ),
+                        const SizedBox(height: 20), // Espacio antes del enlace
+                        // ← NUEVO: Enlace "¿Olvidaste tu contraseña?"
+                        GestureDetector(
+                          onTap: () {
+                            // Navega a la pantalla de recuperación de contraseña
+                            Navigator.pushNamed(context, '/forgot-password');
+                            // Alternativa: mostrar un diálogo, bottom sheet, etc.
+                          },
+                          child: const Text(
+                            "¿Olvidaste tu contraseña?",
+                            style: TextStyle(
+                              color: AppTheme.primary,
+                              fontWeight: FontWeight.w600,
+                              decoration: TextDecoration.underline,
+                            ),
                           ),
                         ),
                       ],

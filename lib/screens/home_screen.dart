@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'main_scaffold.dart';
-import 'app_theme.dart';
+import '../widgets/main_scaffold.dart';
+import '../app_theme.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -85,3 +85,6 @@ class HomeScreen extends StatelessWidget {
         ),
       );
 }
+
+
+
